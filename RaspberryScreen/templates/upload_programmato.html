@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <required class="login"></required>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device.width, initial-scale=1">
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" media="screen">
+    <link rel="stylesheet" type="text/css" href="/static/css/materialize.min.css" media="screen">
+    <link rel="stylesheet" href="/static/css/roboto.css">
+    <link rel="stylesheet" href="/static/css/material-icons.css">
+    <script src="/static/js/materialize.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <title>Caricare File</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            <p align="center">Carica le tue foto</p>
+        </h1>
+        <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <!-- Recupera la pagina html upload -->
+            <p align="center">
+                <input id="file-picker" type="file" name="file" accept="file/*" multiple required>
+                <div align="center" id="msg"></div>
+            </p>
+            <p>
+                <label>Nome evento*</label>
+                <input type="text" id="lbl-evento" name="nome_evento" pattern="^[a-zA-Z0-9\s]+$" title="Solo caratteri alfanumerici e spazi!!"
+                    required/>
+                <br>
+            </p>
+            <p>
+                <label>Quando si terr&agrave; il tuo evento?*</label>
+                <input id="txtDate" type="date" name="data_evento" class="datepicker" required>
+                <br>
+            </p>
+            <!--
+            <p>
+                <label>Quando finir&agrave; il tuo evento?*</label>
+                <input id="txtDateEnd" type="date" name="fine_evento" class="datepicker" required>
+                <br>
+            </p>
+            -->
+            <p>
+                <label>A che ora si terr&agrave; l'evento?*</label>
+                <input id="txt_orario" type="time" name="ora_evento" class="timepicker" required>
+            </p>
+            <!--
+            <br>
+            <label>A che ora finir&agrave; l'evento?*</label>
+            <input id="txt_orarioFine" type="time" name="fineOra_evento" class="timepicker">
+            <br>
+            -->
+            <br>
+            <button class="btn waves-effect waves-light" type="submit" id="upload-button" name="action" onclick="urlencode()">Carica
+                <i class="material-icons right">send</i>
+            </button>
+            <br>
+        </form>
+        <form method="get" action="/home">
+            <button class="btn waves-effect waves-light">Annulla e torna alla Home
+                <i class="material-icons right">home</i>
+            </button>
+        </form>
+    </div>
+    <script>
+        //controllo estensione file, supportati o no
+        var startDate;
+        $("#file-picker").change(function () {
+            var input = document.getElementById('file-picker');
+            for (var i = 0; i < input.files.length; i++) {
+                var ext = input.files[i].name.substring(input.files[i].name.lastIndexOf('.') + 1).toLowerCase()
+                if ((ext == 'jpg') || (ext == 'png') || (ext == 'jpeg')) {
+                    $("#msg").text("File supportati")
+                }
+                else {
+                    $("#msg").text("File non supportati")
+                    document.getElementById("file-picker").value = "";
+                }
+            }
+        });
+        //Blocca i giorni passati su entrambi i datatimepicker
+        $(function () {
+            var dtToday = new Date();
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if (month < 10)
+                month = '0' + month.toString();
+            if (day < 10)
+                day = '0' + day.toString();
+            var minDate = year + '-' + month + '-' + day;
+            startDate = $('#txtDate').val();
+            $('#txtDate').attr('min', minDate);
+        });
+        /*
+        $(function () {
+            var dtToday = new Date();
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if (month < 10)
+                month = '0' + month.toString();
+            if (day < 10)
+                day = '0' + day.toString();
+            var minDate = year + '-' + month + '-' + day;
+            $('#txtDateEnd').attr('min', minDate);
+        });
+        */
+    </script>
+</body>
+
+</html>
