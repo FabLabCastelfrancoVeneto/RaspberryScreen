@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device.width, initial-scale=1">
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" media="screen">
+    <link rel="stylesheet" type="text/css" href="/static/css/materialize.min.css" media="screen">
+    <link rel="stylesheet" href="/static/css/roboto.css">
+    <link rel="stylesheet" href="/static/css/material-icons.css">
+    <script src="/static/js/materialize.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <title aling="centre">Gestione File</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>
+            <p align="center">Dettagli Evento</p>
+        </h1>
+        <div>
+            <table>
+                <tr>
+                    <th width="90%">Nome immagine</th>
+                    <th width="10%"></th>
+                </tr>
+                <tr>
+                    {% for immagine in nome_immagine %} {{ immagine|safe }} {% endfor %}
+                </tr>
+            </table>
+            <br>
+        </div>
+        <br>
+        <form method="GET" action="/upload_immediato">
+            <button class="btn waves-effect waves-light" id="show-button">Torna alla pagina precendente
+                <i class="material-icons right">arrow_back</i>
+            </button>
+        </form>
+        <form method="GET" action="/home">
+            <button class="btn waves-effect waves-light">Torna alla Home
+                <i class="material-icons right">home</i>
+            </button>
+        </form>
+    </div>
+</body>
+
+<script>
+    //passa il percorso della cartella, a seconda dell'evento cliccato
+    $('.deleteImmagine').click(function () {
+        immagini = $(this).attr('immagini');
+        fetch('/deleteImmagine?immagini=' + immagini);
+    })
+</script>
+
+</html>
